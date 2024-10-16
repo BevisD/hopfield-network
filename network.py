@@ -10,7 +10,7 @@ class HopfieldNetwork:
     def train(self, patterns):
         patterns = np.array(patterns)
         assert patterns.ndim >= 2
-        assert patterns.dtype == int
+        assert np.issubdtype(patterns.dtype, np.integer)
         num_patterns = patterns.shape[0]
 
         for p in patterns:
@@ -22,7 +22,7 @@ class HopfieldNetwork:
         self.weights /= num_patterns
 
     def update(self, state):
-        new_state = np.sign(np.dot(self.weights, state)).astype(int)
+        new_state = np.sign(np.dot(self.weights, state)).astype(np.int8)
         new_state[new_state == 0] = 1
         return new_state
 
@@ -32,12 +32,14 @@ class HopfieldNetwork:
 
         state = state.ravel()
         assert state.size == self.n
-        assert state.dtype == int
+        assert np.issubdtype(state.dtype, np.integer)
 
         converged = False
+        iters = 0
         for _ in range(max_iters):
+            iters += 1
             new_state = self.update(state)
-            if np.array_equiv(new_state, state):
+            if np.array_equal(new_state, state):
                 converged = True
                 break
 
@@ -45,12 +47,7 @@ class HopfieldNetwork:
 
         if not converged:
             warnings.warn('Convergence not achieved.')
+        else:
+            print(f'Convergence achieved in {iters} iterations.')
 
         return state.reshape(shape)
-
-
-if __name__ == '__main__':
-    model = HopfieldNetwork(5)
-
-
-
