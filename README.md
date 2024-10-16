@@ -52,6 +52,21 @@ When a partial or noisy version of a stored pattern is presented, the network co
 - **Capacity**: The maximum number of patterns $P$ that can be stored in a Hopfield network is limited. Empirically, it can store around $0.14N$ patterns, where $N$ is the number of neurons.
 - **Spurious states**: The network can sometimes converge to local minima that do not correspond to any stored pattern (spurious memories).
 
+### Results
+The model was trained on $4$ binary images with size $16\times16$. The figure below displays the weight matrix of the trained model $256 \times 256$. Yellow pixels indicate a strong connection between nodes.
+<figure style="text-align: center;">
+  <img src="figures/weights.png" alt="Trained Weight Matrix" width="400">
+  <figcaption>Heatmap displaying the trained weight matrix</figcaption>
+</figure>
+
+This trained model was then used to predict distorted versions of the trained images. The distortion was implemented by flipping each pixel with probability $0.3$. The figure below shows how the model is able to recall which image each altered version corresponds to, in this example there were no spurious images.
+
+<figure style="text-align: center;">
+  <img src="figures/examples.png" alt="Examples showing image recall of the network" width="400">
+  <figcaption>Examples of the model recalling distorted images</figcaption>
+</figure>
+
+
 
 #### References
 - J. J. Hopfield, *"Neural Networks and Physical Systems with Emergent Collective Computational Abilities,"* Proceedings of the National Academy of Sciences, 1982.
